@@ -16,7 +16,7 @@ proc kalman(x, P:Matrix, measurement:seq, R:float, motion, Q, F, H:Matrix): (Mat
     
         
     return (x,P)
-if isMainModule:
+when isMainModule:
     var
         x = zeros(4,1)
         p = eye(4)*1000
