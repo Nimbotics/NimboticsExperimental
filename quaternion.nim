@@ -2,8 +2,10 @@
 import strformat
 import math
 
-type Quaternion* = object
-  w*,x*,y*,z*:float
+type 
+  Quaternion* = object
+    w*,x*,y*,z*:float
+  Unit_Quaternion {.borrow.} = distinct Quaternion
 
 using
   q,p:Quaternion
@@ -67,6 +69,23 @@ proc j *(f): Quaternion =
 proc k *(f): Quaternion = 
   result =  Quaternion(z:f)
 
+converter toUnit(q): Unit_Quaternion =
+  result = q.normalize.Unit_Quaternion
+  
+converter toQuaternion(u:Unit_Quaternion): Quaternion = u.Quaternion
+
+type DualQuaternion = object
+  q1,q2:Quaternion
+
+proc `*` (dq1,dq2:DualQuaternion): DualQuaternion =
+  result.q1 = dq1.q1*dq2.q1
+  result.q2 = dq1.q1*dq2.q2 + dq1.q2*dq2.q1
+proc `+` (dq1,dq2:DualQuaternion): DualQuaternion =
+  result.q1 = dq1.q1 + dq2.q1
+  result.q2 = dq1.q2 + dq2.q2
+
+
+
 type
   Slerp = object
     start,final:Quaternion
@@ -89,6 +108,7 @@ proc slerp (q,p): Slerp =
   result.dotprod = dotprod
   result.theta_0 = theta_0
   result.sin_theta_0 = sin_theta_0
+
 proc call (s:Slerp,t:0d..1d): Quaternion =
   let theta = s.theta_0 * t
   let sin_theta = sin(theta)
