@@ -63,7 +63,7 @@ method chain_rotate(j1,j2:joint,amount:float) =
     
     let x = cos(amount)*(j2.x-j1.x) - sin(amount)*(j2.y-j1.y) + j1.x
     
-    let y = sin(amount)*(j2.x-j1.x) - cos(amount)*(j2.y-j1.y) + j1.y
+    let y = sin(amount)*(j2.x-j1.x) + cos(amount)*(j2.y-j1.y) + j1.y
     j2.pos = (x,y)
     if j2.connection.isNil:
         return
