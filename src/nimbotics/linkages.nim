@@ -1,6 +1,6 @@
 import neo
 import neo/statics
-import modern_robotics
+import ModernRobotics
 import math
 import utils
 
