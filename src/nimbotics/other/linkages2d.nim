@@ -45,7 +45,6 @@ type
 
     joint_type* = enum
         rotary, linear, effector
-
 method angle *(j1,j2:joint): float = j1.pos.angle(j2.pos)
 
 method magnitude *(j1,j2:joint): float = j1.pos.magnitude(j2.pos)

@@ -2,10 +2,15 @@
 import strformat
 import math
 
+proc `~=` (c,f:float): bool =
+  abs(f - c) < 1e6
+
 type 
   Quaternion* = object
     w*,x*,y*,z*:float
-  Unit_Quaternion {.borrow.} = distinct Quaternion
+  unitQuat = concept q
+    q is Quaternion
+    (q.w ^ 2 + q.x ^ 2 + q.y ^ 2 + q.z ^ 2) ~= 1 
 
 using
   q,p:Quaternion
@@ -69,18 +74,13 @@ proc j *(f): Quaternion =
 proc k *(f): Quaternion = 
   result =  Quaternion(z:f)
 
-converter toUnit(q): Unit_Quaternion =
-  result = q.normalize.Unit_Quaternion
-  
-converter toQuaternion(u:Unit_Quaternion): Quaternion = u.Quaternion
-
 type DualQuaternion = object
   q1,q2:Quaternion
 
-proc `*` (dq1,dq2:DualQuaternion): DualQuaternion =
+proc `*` *(dq1,dq2:DualQuaternion): DualQuaternion =
   result.q1 = dq1.q1*dq2.q1
   result.q2 = dq1.q1*dq2.q2 + dq1.q2*dq2.q1
-proc `+` (dq1,dq2:DualQuaternion): DualQuaternion =
+proc `+` *(dq1,dq2:DualQuaternion): DualQuaternion =
   result.q1 = dq1.q1 + dq2.q1
   result.q2 = dq1.q2 + dq2.q2
 
