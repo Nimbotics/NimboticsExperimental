@@ -11,7 +11,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.2.0"
-requires ModernRobotics
+requires "ModernRobotics >= 0.1.0"
 
 
 # testing
